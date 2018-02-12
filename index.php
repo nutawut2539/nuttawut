@@ -1,7 +1,6 @@
 <?php
    if(isset($_FILES['image'])){
       $errors= array();
-      $flower=array("roses","tulips","sunflowers","daisy","dandelion");
       $img = $_FILES['file_uploaded']['name'];
       $file_name = $_FILES['image']['name'];
       $file_size =$_FILES['image']['size'];
