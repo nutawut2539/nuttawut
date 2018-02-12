@@ -17,18 +17,9 @@
       if(empty($errors)==true){
          echo "Success...<br>";
 	$a = $_FILES['image']['name'];
-	//models not work sometimes
-	$predict = shell_exec("python models-master/tutorials/image/imagenet/classify_image.py --image_file $a ");
 	//trained tensorflow
 	$train = shell_exec("python tensorflow-master/tensorflow/examples/label_image/label_image.py \--graph=/tmp/output_graph.pb --labels=/tmp/output_labels.txt \--input_layer=Mul \--output_layer=final_result \--input_mean=128 --input_std=128 \--image=$a");
-    echo "and the train-tensorflow is ".$train."<br>";
-    for($x=0,$y=0;$x<=strlen($train);$x=$x+1){
-	if($train[$x]=='.'){
-		$result=($train[$x+1]*10)+$train[$x+2]+($train[$x+3]/10)+($train[$x+4]/100);
-		echo "$flower[$y] is ".$result."%. <br>";
-		$y=$y+1;
-	}
-    }
+    echo "the train-tensorflow is ".$train."<br>";
       }else{print_r($errors);}
    }
 ?>
