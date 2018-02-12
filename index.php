@@ -15,7 +15,7 @@
          $errors[]="File size must be excately 2 MB";
       }
       if(empty($errors)==true){
-         echo "Success\n";
+         echo "Success...<br>";
 	$a = $_FILES['image']['name'];
 	//models not work sometimes
 	$predict = shell_exec("python models-master/tutorials/image/imagenet/classify_image.py --image_file $a ");
