@@ -1,6 +1,4 @@
 <?php
-   //set up system
-   shell_exec("python models-master/tutorials/image/imagenet/classify_image.py");
    if(isset($_FILES['image'])){
       $errors= array();
       $flower=array("roses","tulips","sunflowers","daisy","dandelion");
