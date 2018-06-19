@@ -1,41 +1,76 @@
-<?php 
-
-$method = $_SERVER['REQUEST_METHOD'];
-
-// Process only when method is POST
-if($method == 'POST'){
-	$requestBody = file_get_contents('php://input');
-	$json = json_decode($requestBody);
-
-	$text = $json->result->parameters->text;
-
-	switch ($text) {
-		case 'hi':
-			$speech = "Hi, Nice to meet you";
-			break;
-
-		case 'bye':
-			$speech = "Bye, good night";
-			break;
-
-		case 'anything':
-			$speech = "Yes, you can type anything here.";
-			break;
-		
-		default:
-			$speech = "Sorry, I didnt get that. Please ask me something else.";
-			break;
-	}
-
-	$response = new \stdClass();
-	$response->speech = $speech;
-	$response->displayText = $speech;
-	$response->source = "webhook";
-	echo json_encode($response);
-}
-else
+function getTeamSchedule(req,res)
 {
-	echo "Method not allowed";
+let parameters = req.body.result.parameters;
+    if (parameters.team1 == "")
+    {
+      let game_occurence = parameters.game_occurence;
+      let team = parameters.team;
+      if (game_occurence == "previous")
+      {
+        //previous game
+        GameSchedule.find({opponent:team},function(err,games)
+        {
+          if (err)
+          {
+            return res.json({
+                speech: 'Something went wrong!',
+                displayText: 'Something went wrong!',
+                source: 'game schedule'
+            });
+          }
+          if (games)
+          {
+            var requiredGame;
+            for (var i=0; i < games.length; i++)
+            {
+                var game = games[i];
+var convertedCurrentDate = new Date();
+                var convertedGameDate = new Date(game.date);
+if (convertedGameDate > convertedCurrentDate)
+                {
+                  if(games.length > 1)
+                  {
+                    requiredGame = games[i-1];
+var winningStatement = "";
+                    if (requiredGame.isWinner)
+                    {
+                        winningStatement = "Kings won this match by "+requiredGame.score;
+                    }
+                    else {
+                      winningStatement = "Kings lost this match by "+requiredGame.score;
+                    }
+                    return res.json({
+                        speech: 'Last game between Kings and '+parameters.team+' was played on '+requiredGame.date+' .'+winningStatement,
+                        displayText: 'Last game between Kings and '+parameters.team+' was played on '+requiredGame.date+' .'+winningStatement,
+                        source: 'game schedule'
+                    });
+                    break;
+                  }
+                  else {
+                    return res.json({
+                        speech: 'Cant find any previous game played between Kings and '+parameters.team,
+                        displayText: 'Cant find any previous game played between Kings and '+parameters.team,
+                        source: 'game schedule'
+                    });
+                  }
+                }
+            }
 }
-
-?>
+});
+      }
+      else {
+        return res.json({
+            speech: 'Next game schedules will be available soon',
+            displayText: 'Next game schedules will be available soon',
+            source: 'game schedule'
+        });
+      }
+    }
+    else {
+      return res.json({
+          speech: 'Cant handle the queries with two teams now. I will update myself',
+          displayText: 'Cant handle the queries with two teams now. I will update myself',
+          source: 'game schedule'
+      });
+    }
+  }
