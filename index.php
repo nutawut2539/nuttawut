@@ -6,7 +6,7 @@ function processMessage($update) {
             "speech" => "..........TEXT HERE...........",
             "displayText" => ".........TEXT HERE...........",
             "contextOut" => array(),
-            "fulfillmentText" : "Hello"
+            "fulfillmentText" => "Hello"
         ));
     }
 }
