@@ -2,11 +2,10 @@
 function processMessage($update) {
     if($update["result"]["action"] == "buscar.nfe"){
         sendMessage(array(
-            'source' => $update["result"]["source"],
-            'speech' => "..........TEXT HERE...........",
-            'displayText' => ".........TEXT HERE...........",
-            'data' => [],
-            'contextOut' => array()
+            "source" => "..........TEXT HERE...........",
+            "speech" => "..........TEXT HERE...........",
+            "displayText" => ".........TEXT HERE...........",
+            "contextOut" => array()
         ));
     }
 }
