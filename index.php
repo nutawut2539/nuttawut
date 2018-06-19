@@ -1,21 +1,14 @@
 <?php
 function processMessage($update) {
     if($update["result"]["action"] == "buscar.nfe"){
-        sendMessage(array(
-            "source" => $update["result"]["source"],
-            "speech" => "..........TEXT HERE...........",
-            "displayText" => ".........TEXT HERE...........",
-            "contextOut" => array(),
-            "fulfillmentText" => "Hello"
-        ));
+    $response = new \stdClass();
+	$response->speech = "..........TEXT HERE...........";
+	$response->displayText = ".........TEXT HERE...........";
+	$response->source = $update["result"]["source"];
+	echo json_encode($response);
     }
 }
-/*
- * FUNÇÃO PARA ENVIAR A MENSAGEM
- */
-function sendMessage($parameters) {
-    echo json_encode($parameters);
-}
+
 
 /*
  * PEGANDO A REQUISIÇÃO
@@ -26,3 +19,5 @@ if (isset($update["result"]["action"])) {
     processMessage($update);
 }
 ?>
+
+
