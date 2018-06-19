@@ -2,7 +2,7 @@
 function processMessage($update) {
     if($update["result"]["action"] == "buscar.nfe"){
         sendMessage(array(
-            "source" => "..........TEXT HERE...........",
+            "source" => $update["result"]["source"],
             "speech" => "..........TEXT HERE...........",
             "displayText" => ".........TEXT HERE...........",
             "contextOut" => array()
