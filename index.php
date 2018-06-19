@@ -1,45 +1,41 @@
-POST https://my-service.com/action
+<?php 
 
-Headers:
-//user defined headers
-Content-type: application/json
+$method = $_SERVER['REQUEST_METHOD'];
 
-POST body:
-{
-  "responseId": "ea3d77e8-ae27-41a4-9e1d-174bd461b68c",
-  "session": "projects/your-agents-project-id/agent/sessions/88d13aa8-2999-4f71-b233-39cbf3a824a0",
-  "queryResult": {
-    "queryText": "user's original query to your agent",
-    "parameters": {
-      "param": "param value"
-    },
-    "allRequiredParamsPresent": true,
-    "fulfillmentText": "Text defined in Dialogflow's console for the intent that was matched",
-    "fulfillmentMessages": [
-      {
-        "text": {
-          "text": [
-            "Text defined in Dialogflow's console for the intent that was matched"
-          ]
-        }
-      }
-    ],
-    "outputContexts": [
-      {
-        "name": "projects/your-agents-project-id/agent/sessions/88d13aa8-2999-4f71-b233-39cbf3a824a0/contexts/generic",
-        "lifespanCount": 5,
-        "parameters": {
-          "param": "param value"
-        }
-      }
-    ],
-    "intent": {
-      "name": "projects/your-agents-project-id/agent/intents/29bcd7f8-f717-4261-a8fd-2d3e451b8af8",
-      "displayName": "Matched Intent Name"
-    },
-    "intentDetectionConfidence": 1,
-    "diagnosticInfo": {},
-    "languageCode": "en"
-  },
-  "originalDetectIntentRequest": {}
+// Process only when method is POST
+if($method == 'POST'){
+	$requestBody = file_get_contents('php://input');
+	$json = json_decode($requestBody);
+
+	$text = $json->result->parameters->text;
+
+	switch ($text) {
+		case 'hi':
+			$speech = "Hi, Nice to meet you";
+			break;
+
+		case 'bye':
+			$speech = "Bye, good night";
+			break;
+
+		case 'anything':
+			$speech = "Yes, you can type anything here.";
+			break;
+		
+		default:
+			$speech = "Sorry, I didnt get that. Please ask me something else.";
+			break;
+	}
+
+	$response = new \stdClass();
+	$response->speech = $speech;
+	$response->displayText = $speech;
+	$response->source = "webhook";
+	echo json_encode($response);
 }
+else
+{
+	echo "Method not allowed";
+}
+
+?>
